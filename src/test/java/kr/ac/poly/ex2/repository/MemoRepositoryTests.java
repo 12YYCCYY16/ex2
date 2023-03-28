@@ -63,14 +63,14 @@ public class MemoRepositoryTests {
     }
 
     @Test
-    public void testDelete(){
+    public void testDelete() {
         Long mno = 100l;
         memorepository.deleteById(mno);
     }
 
     @Test
-    public void testPageDefault(){
-        Pageable pageable = PageRequest.of(0,10);
+    public void testPageDefault() {
+        Pageable pageable = PageRequest.of(0, 10);
         Page<Memo> result = memorepository.findAll(pageable);
         System.out.println(result);
         System.out.println("======================");
@@ -81,54 +81,57 @@ public class MemoRepositoryTests {
         System.out.println("has next page : " + result.hasNext());//다음페이지 존재여부
         System.out.println("is First Page : " + result.isFirst());//현재 페이지가 첫번째 페이지
         System.out.println("=========================");
-        for (Memo memo: result.getContent()){
+        for (Memo memo : result.getContent()) {
             System.out.println(memo);
         }
     }
+
     @Test
-    public void testSort(){
+    public void testSort() {
         Sort sort = Sort.by("mno").descending();
-        Pageable pageable =PageRequest.of(0,10,sort);
+        Pageable pageable = PageRequest.of(0, 10, sort);
         Page<Memo> result = memorepository.findAll(pageable);
         result.get().forEach(memo -> {
             System.out.println(memo);
         });
     }
+
     @Test
-    public void testQueryMethodWithPageable(){
-        Pageable pageable = PageRequest.of(0,10,Sort.by("mno").descending());
-        Page<Memo> result = memorepository.findByMnoBetween(20L,50L,pageable);
+    public void testQueryMethodWithPageable() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("mno").descending());
+        Page<Memo> result = memorepository.findByMnoBetween(20L, 50L, pageable);
         result.get().forEach(
                 memo -> System.out.println(memo)
         );
 
         //for (Memo memo:result){
-         //   System.out.println(memo);
+        //   System.out.println(memo);
         //}
     }
+
     @Test
     @Commit
     @Transactional
-    public void testDeleteQueryMethods(){
+    public void testDeleteQueryMethods() {
         memorepository.deleteMemoByMnoLessThan(10L);
     }
 
     @Test
-    public void testGetListDesc(){
+    public void testGetListDesc() {
         List<Memo> list = memorepository.getListDesc();
-        for (Memo memo: list){
+        for (Memo memo : list) {
             System.out.println(memo);
         }
     }
 
     @Test
-    public void testUpdateMemoText(){
-       int updateCount = memorepository.updateMemoText(30L, "30행 수정됨");
+    public void testUpdateMemoText() {
+        int updateCount = memorepository.updateMemoText(30L, "30행 수정됨");
 
     }
 
     @Test
-    public void testUpdateMemoText2(){
+    public void testUpdateMemoText2() {
         Memo memo = new Memo();
         memo.setMno(31);
         memo.setMemoText("31행 수정 Memo 객체 참조값을 param으로 사용");
@@ -137,8 +140,8 @@ public class MemoRepositoryTests {
     }
 
     @Test
-    public void testGetListWithQuery(){
-        Pageable pageable = PageRequest.of(0,50, Sort.by(":mno").ascending());
+    public void testGetListWithQuery() {
+        Pageable pageable = PageRequest.of(0, 50, Sort.by("mno").ascending());
         Page<Memo> result = memorepository.getListWithQuery(32L, pageable);
         result.get().forEach(
                 memo -> System.out.println(memo)
