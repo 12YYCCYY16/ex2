@@ -9,6 +9,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Setter
 
 @ToString
 public class Memo {

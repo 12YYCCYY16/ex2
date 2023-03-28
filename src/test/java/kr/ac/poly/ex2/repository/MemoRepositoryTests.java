@@ -9,7 +9,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.annotation.Commit;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -91,5 +93,55 @@ public class MemoRepositoryTests {
         result.get().forEach(memo -> {
             System.out.println(memo);
         });
+    }
+    @Test
+    public void testQueryMethodWithPageable(){
+        Pageable pageable = PageRequest.of(0,10,Sort.by("mno").descending());
+        Page<Memo> result = memorepository.findByMnoBetween(20L,50L,pageable);
+        result.get().forEach(
+                memo -> System.out.println(memo)
+        );
+
+        //for (Memo memo:result){
+         //   System.out.println(memo);
+        //}
+    }
+    @Test
+    @Commit
+    @Transactional
+    public void testDeleteQueryMethods(){
+        memorepository.deleteMemoByMnoLessThan(10L);
+    }
+
+    @Test
+    public void testGetListDesc(){
+        List<Memo> list = memorepository.getListDesc();
+        for (Memo memo: list){
+            System.out.println(memo);
+        }
+    }
+
+    @Test
+    public void testUpdateMemoText(){
+       int updateCount = memorepository.updateMemoText(30L, "30행 수정됨");
+
+    }
+
+    @Test
+    public void testUpdateMemoText2(){
+        Memo memo = new Memo();
+        memo.setMno(31);
+        memo.setMemoText("31행 수정 Memo 객체 참조값을 param으로 사용");
+
+        int updateCount = memorepository.updateMemoText2(memo);
+    }
+
+    @Test
+    public void testGetListWithQuery(){
+        Pageable pageable = PageRequest.of(0,50, Sort.by(":mno").ascending());
+        Page<Memo> result = memorepository.getListWithQuery(32L, pageable);
+        result.get().forEach(
+                memo -> System.out.println(memo)
+        );
     }
 }
